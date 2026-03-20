@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de QR Code Permanente - Modern Dark</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Gerador de QR Code</h1>
+        <p>Insira um link ou texto para gerar seu código estático.</p>
+        
+        <div class="input-group">
+            <input type="text" id="qr-input" placeholder="Ex: https://seusite.com.br">
+            <button id="generate-btn">Gerar</button>
+        </div>
+        
+        <div id="result-area" class="hidden">
+            <div id="qrcode-container"></div>
+            <div class="action-buttons">
+                <button id="download-pure-btn" class="download-btn secondary-btn">Baixar Apenas Código (PNG)</button>
+                <button id="download-framed-btn" class="download-btn primary-btn">Baixar com Borda (PNG)</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

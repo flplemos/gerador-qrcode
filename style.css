@@ -1,0 +1,149 @@
+/* --- Reset e Variáveis de Cores (Mantidas e Expandidas) --- */
+:root {
+    --bg-color: #121212;
+    --container-bg: #1e1e1e;
+    --text-primary: #e0e0e0;
+    --text-secondary: #a0a0a0;
+    --accent-color: #3b82f6;
+    --accent-hover: #2563eb;
+    /* Novas cores para os botões de download */
+    --download-primary-bg: #22c55e;
+    --download-primary-hover: #16a34a;
+    --download-secondary-bg: #6b7280;
+    --download-secondary-hover: #4b5563;
+    --border-color: #333333;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background-color: var(--container-bg);
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    max-width: 480px; /* Aumentado um pouco para acomodar os botões lado a lado */
+    width: 90%;
+    border: 1px solid #2a2a2a;
+}
+
+h1 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+p {
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    font-size: 1rem;
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 1.5rem;
+}
+
+input {
+    flex-grow: 1;
+    padding: 12px 16px;
+    background-color: #2a2a2a;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+button {
+    padding: 12px 24px;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+button:hover {
+    background-color: var(--accent-hover);
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+#result-area {
+    margin-top: 1rem;
+    border-top: 1px solid var(--border-color);
+    padding-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* --- Box Branca do QR Code (Importante para o Mentor: O CSS não vai no Download!) --- */
+#qrcode-container {
+    background-color: white;
+    padding: 20px; /* Padding visível na tela */
+    border-radius: 12px; /* Border-radius visível na tela */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+/* --- Novo Grupo de Botões de Ação --- */
+.action-buttons {
+    width: 100%;
+    display: flex;
+    gap: 10px; /* Espaço entre os botões */
+    flex-wrap: wrap; /* Para quebrar linha em telas pequenas */
+    justify-content: center;
+}
+
+.download-btn {
+    flex-grow: 1; /* Botões ocupam espaço igual */
+    font-size: 14px; /* Fonte ligeiramente menor */
+    padding: 10px 16px;
+}
+
+.download-btn.primary-btn {
+    background-color: var(--download-primary-bg);
+}
+
+.download-btn.primary-btn:hover {
+    background-color: var(--download-primary-hover);
+}
+
+.download-btn.secondary-btn {
+    background-color: var(--download-secondary-bg);
+}
+
+.download-btn.secondary-btn:hover {
+    background-color: var(--download-secondary-hover);
+}
