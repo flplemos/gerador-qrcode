@@ -48,7 +48,7 @@ body {
     justify-content: flex-start;
     align-items: center;
     min-height: 100vh;
-    padding: 20px 0;
+    padding: 90px 0 20px 0;
     transition: background-color 0.3s, color 0.3s;
 }
 
@@ -75,6 +75,7 @@ body {
     align-items: center;
     justify-content: center;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    
 }
 
 .theme-toggle-btn:hover {
@@ -99,6 +100,12 @@ body.light-mode .theme-toggle-btn {
     margin-top: 80px;
 }
 
+p {
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+}
+
 body.light-mode .container {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
@@ -110,16 +117,8 @@ body.light-mode .container {
     }
 }
 
-h1 {
-    font-size: 1.8rem;
-    margin-bottom: 0.5rem;
-    font-weight: 700;
-}
-
-p {
-    color: var(--text-secondary);
-    margin-bottom: 2rem;
-    font-size: 1rem;
+body.light-mode .container {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);ont-size: 1rem;
 }
 
 .input-group {
