@@ -96,10 +96,18 @@ body.light-mode .theme-toggle-btn {
     width: 90%;
     border: 1px solid var(--border-color);
     transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+    margin-top: 80px;
 }
 
 body.light-mode .container {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive - Remover margem em telas maiores */
+@media (min-width: 768px) {
+    .container {
+        margin-top: 0;
+    }
 }
 
 h1 {
