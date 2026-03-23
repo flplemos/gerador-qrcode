@@ -4,7 +4,7 @@ Um gerador de QR Code estático, rápido e altamente customizável construído c
 
 🔗 **[Acesse o projeto rodando aqui](https://flplemos.github.io/gerador-qrcode/)**
 
-![Preview do Projeto](https://via.placeholder.com/800x400?text=Gerador+de+QR+Code+-+Preview) *(Substitua este link por uma screenshot real do seu projeto)*
+![Preview do Projeto]<a href="https://ibb.co/vxb4XWP9"><img src="https://i.ibb.co/3ywmRbNK/Captura-de-tela-23-3-2026-104038-flplemos-github-io.jpg" alt="Captura-de-tela-23-3-2026-104038-flplemos-github-io" border="0"></a>
 
 ## ✨ Funcionalidades
 
