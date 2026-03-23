@@ -118,7 +118,7 @@ body.light-mode .container {
 }
 
 body.light-mode .container {
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);ont-size: 1rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);font-size: 1rem;
 }
 
 .input-group {
