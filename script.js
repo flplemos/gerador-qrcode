@@ -18,6 +18,15 @@ const FRAME_CONFIG = {
     borderRadius: 12
 };
 
+// Variável para armazenar informações do QR code
+let currentQRConfig = {
+    text: '',
+    realSize: 256,
+    colorDark: '#000000',
+    colorLight: '#ffffff',
+    correctLevel: QRCode.CorrectLevel.M
+};
+
 generateBtn.addEventListener('click', () => {
     const inputValue = qrInput.value.trim();
 
@@ -42,25 +51,40 @@ generateBtn.addEventListener('click', () => {
         default: correctLevel = QRCode.CorrectLevel.M;
     }
 
+    // Armazena a configuração do QR code
+    currentQRConfig = {
+        text: inputValue,
+        realSize: size,
+        colorDark: colorDark,
+        colorLight: colorLight,
+        correctLevel: correctLevel
+    };
+
     qrcodeContainer.innerHTML = "";
 
-    // Aplica a cor de fundo selecionada à div externa para manter o design consistente
+    // Aplica a cor de fundo selecionada à div externa
     qrcodeContainer.style.backgroundColor = colorLight;
 
-    // Instancia a biblioteca com os valores dinâmicos
+    // Define um tamanho máximo para exibição na tela (350px)
+    const displaySize = Math.min(size, 350);
+
+    // Instancia a biblioteca com o tamanho reduzido para exibição
     new QRCode(qrcodeContainer, {
         text: inputValue,
-        width: size,
-        height: size,
+        width: displaySize,
+        height: displaySize,
         colorDark : colorDark,
         colorLight : colorLight,
         correctLevel : correctLevel
     });
 
+    // Atualiza a informação de tamanho real
+    document.getElementById('qrcode-size-info').textContent = `${size}x${size}px`;
+
     resultArea.classList.remove('hidden');
 });
 
-// Atualizamos a função para receber a cor de fundo (bgColor) como parâmetro
+// Função para gerar canvas com borda
 function generateCanvasWithBorder(originalCanvas, padding, borderRadius, bgColor) {
     const framedCanvas = document.createElement('canvas');
     const ctx = framedCanvas.getContext('2d');
@@ -68,7 +92,7 @@ function generateCanvasWithBorder(originalCanvas, padding, borderRadius, bgColor
     framedCanvas.width = originalCanvas.width + (padding * 2);
     framedCanvas.height = originalCanvas.height + (padding * 2);
 
-    // Usa a cor de fundo selecionada pelo usuário em vez de branco fixo
+    // Usa a cor de fundo selecionada pelo usuário
     ctx.fillStyle = bgColor;
     
     if (ctx.roundRect) {
@@ -84,28 +108,60 @@ function generateCanvasWithBorder(originalCanvas, padding, borderRadius, bgColor
 
 // Downloads
 downloadPureBtn.addEventListener('click', () => {
-    const canvas = qrcodeContainer.querySelector('canvas');
-    if (canvas) {
-        const imageDataUrl = canvas.toDataURL("image/png");
-        downloadImage(imageDataUrl, 'pure');
-    } else {
-        alert("Erro: QR Code não gerado.");
-    }
+    const container = document.createElement('div');
+    container.style.display = 'none';
+    document.body.appendChild(container);
+
+    // Gera o QR code em tamanho real para download
+    new QRCode(container, {
+        text: currentQRConfig.text,
+        width: currentQRConfig.realSize,
+        height: currentQRConfig.realSize,
+        colorDark : currentQRConfig.colorDark,
+        colorLight : currentQRConfig.colorLight,
+        correctLevel : currentQRConfig.correctLevel
+    });
+
+    // Aguarda um pouco para o QR code ser renderizado
+    setTimeout(() => {
+        const canvas = container.querySelector('canvas');
+        if (canvas) {
+            const imageDataUrl = canvas.toDataURL("image/png");
+            downloadImage(imageDataUrl, 'pure');
+        } else {
+            alert("Erro: QR Code não gerado.");
+        }
+        document.body.removeChild(container);
+    }, 100);
 });
 
 downloadFramedBtn.addEventListener('click', () => {
-    const originalCanvas = qrcodeContainer.querySelector('canvas');
-    
-    if (originalCanvas) {
-        // Passamos a cor de fundo atual para a função de criar a borda
-        const currentLightColor = colorLightInput.value;
-        const framedCanvas = generateCanvasWithBorder(originalCanvas, FRAME_CONFIG.padding, FRAME_CONFIG.borderRadius, currentLightColor);
-        
-        const imageDataUrl = framedCanvas.toDataURL("image/png");
-        downloadImage(imageDataUrl, 'framed');
-    } else {
-        alert("Erro: QR Code não gerado.");
-    }
+    const container = document.createElement('div');
+    container.style.display = 'none';
+    document.body.appendChild(container);
+
+    // Gera o QR code em tamanho real para download
+    new QRCode(container, {
+        text: currentQRConfig.text,
+        width: currentQRConfig.realSize,
+        height: currentQRConfig.realSize,
+        colorDark : currentQRConfig.colorDark,
+        colorLight : currentQRConfig.colorLight,
+        correctLevel : currentQRConfig.correctLevel
+    });
+
+    // Aguarda um pouco para o QR code ser renderizado
+    setTimeout(() => {
+        const originalCanvas = container.querySelector('canvas');
+        if (originalCanvas) {
+            const framedCanvas = generateCanvasWithBorder(originalCanvas, FRAME_CONFIG.padding, FRAME_CONFIG.borderRadius, currentQRConfig.colorLight);
+            const imageDataUrl = framedCanvas.toDataURL("image/png");
+            downloadImage(imageDataUrl, 'framed');
+        } else {
+            alert("Erro: QR Code não gerado.");
+        }
+        document.body.removeChild(container);
+    }, 100);
 });
 
 function downloadImage(dataUrl, suffix) {

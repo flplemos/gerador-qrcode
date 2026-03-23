@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerador de QR Code Permanente</title>
+    <link rel="shortcut icon" href="img/favicon.svg" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -49,9 +50,8 @@
         </div>
         
         <div id="result-area" class="hidden">
-        
-        <div id="result-area" class="hidden">
             <div id="qrcode-container"></div>
+            <p id="qrcode-info" style="color: var(--text-secondary); font-size: 0.9rem; margin: 10px 0;">Prévia em escala. Tamanho real: <strong id="qrcode-size-info"></strong></p>
             <div class="action-buttons">
                 <button id="download-pure-btn" class="download-btn secondary-btn">Baixar Apenas Código (PNG)</button>
                 <button id="download-framed-btn" class="download-btn primary-btn">Baixar com Borda (PNG)</button>
