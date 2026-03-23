@@ -12,6 +12,25 @@
     --download-secondary-bg: #6b7280;
     --download-secondary-hover: #4b5563;
     --border-color: #333333;
+    --input-bg: #2a2a2a;
+    --options-bg: #2a2a2a;
+}
+
+/* Light Mode */
+body.light-mode {
+    --bg-color: #f5f5f5;
+    --container-bg: #ffffff;
+    --text-primary: #1a1a1a;
+    --text-secondary: #666666;
+    --accent-color: #2563eb;
+    --accent-hover: #1d4ed8;
+    --download-primary-bg: #22c55e;
+    --download-primary-hover: #16a34a;
+    --download-secondary-bg: #e5e7eb;
+    --download-secondary-hover: #d1d5db;
+    --border-color: #e5e7eb;
+    --input-bg: #f0f0f0;
+    --options-bg: #f9f9f9;
 }
 
 * {
@@ -28,6 +47,41 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* --- Theme Toggle Button --- */
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.theme-toggle-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    background-color: var(--container-bg);
+    border: 2px solid var(--border-color);
+    color: var(--text-primary);
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.theme-toggle-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+body.light-mode .theme-toggle-btn {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .container {
@@ -38,7 +92,12 @@ body {
     text-align: center;
     max-width: 480px; /* Aumentado um pouco para acomodar os botões lado a lado */
     width: 90%;
-    border: 1px solid #2a2a2a;
+    border: 1px solid var(--border-color);
+    transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+
+body.light-mode .container {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
@@ -62,12 +121,12 @@ p {
 input {
     flex-grow: 1;
     padding: 12px 16px;
-    background-color: #2a2a2a;
+    background-color: var(--input-bg);
     border: 1px solid var(--border-color);
     border-radius: 8px;
     color: var(--text-primary);
     font-size: 16px;
-    transition: border-color 0.3s;
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
 }
 
 input:focus {
@@ -146,4 +205,60 @@ button:active {
 
 .download-btn.secondary-btn:hover {
     background-color: var(--download-secondary-hover);
+}
+
+/* --- Opções de Customização --- */
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Cria duas colunas de tamanhos iguais */
+    gap: 15px;
+    margin-bottom: 1.5rem;
+    text-align: left;
+    background-color: var(--options-bg);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+.option-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.option-item label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+select, input[type="color"] {
+    width: 100%;
+    padding: 8px;
+    background-color: var(--input-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-primary);
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+}
+
+select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+input[type="color"] {
+    padding: 2px 5px;
+    height: 38px; /* Altura para combinar com o select */
+}
+
+/* Modificamos o background fixo do qrcode-container pois agora ele será dinâmico pelo JS */
+#qrcode-container {
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    transition: background-color 0.3s; /* Transição suave ao mudar a cor de fundo */
 }

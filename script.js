@@ -1,18 +1,23 @@
-// Mapeando os novos elementos
+// Mapeando os elementos
 const qrInput = document.getElementById('qr-input');
 const generateBtn = document.getElementById('generate-btn');
 const qrcodeContainer = document.getElementById('qrcode-container');
 const resultArea = document.getElementById('result-area');
 const downloadPureBtn = document.getElementById('download-pure-btn');
 const downloadFramedBtn = document.getElementById('download-framed-btn');
+const themeBtn = document.getElementById('theme-btn');
 
-// Configurações da moldura (recriando o CSS programaticamente)
+// Mapeando os novos inputs de customização
+const sizeSelect = document.getElementById('qr-size');
+const colorDarkInput = document.getElementById('qr-color-dark');
+const colorLightInput = document.getElementById('qr-color-light');
+const correctionSelect = document.getElementById('qr-correction');
+
 const FRAME_CONFIG = {
-    padding: 20, // Padding em pixels (igual ao CSS padding: 20px)
-    borderRadius: 12 // Raio da borda em pixels (igual ao CSS border-radius: 12px)
+    padding: 20,
+    borderRadius: 12
 };
 
-// Função para gerar o QR Code
 generateBtn.addEventListener('click', () => {
     const inputValue = qrInput.value.trim();
 
@@ -22,54 +27,62 @@ generateBtn.addEventListener('click', () => {
         return;
     }
 
-    // Limpa o contêiner anterior
+    // Captura os valores selecionados nas opções
+    const size = parseInt(sizeSelect.value);
+    const colorDark = colorDarkInput.value;
+    const colorLight = colorLightInput.value;
+    
+    // Mapeia o nível de correção selecionado para o objeto da biblioteca
+    let correctLevel;
+    switch(correctionSelect.value) {
+        case 'L': correctLevel = QRCode.CorrectLevel.L; break;
+        case 'M': correctLevel = QRCode.CorrectLevel.M; break;
+        case 'Q': correctLevel = QRCode.CorrectLevel.Q; break;
+        case 'H': correctLevel = QRCode.CorrectLevel.H; break;
+        default: correctLevel = QRCode.CorrectLevel.M;
+    }
+
     qrcodeContainer.innerHTML = "";
 
-    // Instancia a biblioteca (usando correção M para códigos cleans)
+    // Aplica a cor de fundo selecionada à div externa para manter o design consistente
+    qrcodeContainer.style.backgroundColor = colorLight;
+
+    // Instancia a biblioteca com os valores dinâmicos
     new QRCode(qrcodeContainer, {
         text: inputValue,
-        width: 250,
-        height: 250,
-        colorDark : "#000000",
-        colorLight : "#ffffff",
-        correctLevel : QRCode.CorrectLevel.M 
+        width: size,
+        height: size,
+        colorDark : colorDark,
+        colorLight : colorLight,
+        correctLevel : correctLevel
     });
 
-    // Mostra a área de resultado
     resultArea.classList.remove('hidden');
 });
 
-// --- Função Auxiliar do Mentor: Criar um Canvas Composto com Moldura ---
-function generateCanvasWithBorder(originalCanvas, padding, borderRadius) {
-    // 1. Cria o novo canvas virtual
+// Atualizamos a função para receber a cor de fundo (bgColor) como parâmetro
+function generateCanvasWithBorder(originalCanvas, padding, borderRadius, bgColor) {
     const framedCanvas = document.createElement('canvas');
     const ctx = framedCanvas.getContext('2d');
 
-    // 2. Define as dimensões do novo canvas (Original + Padding total)
     framedCanvas.width = originalCanvas.width + (padding * 2);
     framedCanvas.height = originalCanvas.height + (padding * 2);
 
-    // 3. Desenha o fundo branco com cantos arredondados
-    ctx.fillStyle = "#ffffff";
+    // Usa a cor de fundo selecionada pelo usuário em vez de branco fixo
+    ctx.fillStyle = bgColor;
     
-    // Usamos roundRect (uma função moderna do canvas) ou um fallback sutil
     if (ctx.roundRect) {
         ctx.roundRect(0, 0, framedCanvas.width, framedCanvas.height, borderRadius);
         ctx.fill();
     } else {
-        // Fallback simples para navegadores muito antigos (desenha retângulo sem arredondamento)
         ctx.fillRect(0, 0, framedCanvas.width, framedCanvas.height);
     }
 
-    // 4. Desenha o QR Code original centralizado dentro do fundo branco
     ctx.drawImage(originalCanvas, padding, padding);
-
     return framedCanvas;
 }
 
-// --- Funções de Download ---
-
-// 1. Download do código PURO (Comportamento original)
+// Downloads
 downloadPureBtn.addEventListener('click', () => {
     const canvas = qrcodeContainer.querySelector('canvas');
     if (canvas) {
@@ -80,15 +93,14 @@ downloadPureBtn.addEventListener('click', () => {
     }
 });
 
-// 2. Download do código COM BORDA (O desafio!)
 downloadFramedBtn.addEventListener('click', () => {
     const originalCanvas = qrcodeContainer.querySelector('canvas');
     
     if (originalCanvas) {
-        // Gera o canvas composto usando nossa função auxiliar
-        const framedCanvas = generateCanvasWithBorder(originalCanvas, FRAME_CONFIG.padding, FRAME_CONFIG.borderRadius);
+        // Passamos a cor de fundo atual para a função de criar a borda
+        const currentLightColor = colorLightInput.value;
+        const framedCanvas = generateCanvasWithBorder(originalCanvas, FRAME_CONFIG.padding, FRAME_CONFIG.borderRadius, currentLightColor);
         
-        // Gera a imagem do download a partir do canvas composto
         const imageDataUrl = framedCanvas.toDataURL("image/png");
         downloadImage(imageDataUrl, 'framed');
     } else {
@@ -96,22 +108,43 @@ downloadFramedBtn.addEventListener('click', () => {
     }
 });
 
-// Função utilitária para fazer o download
 function downloadImage(dataUrl, suffix) {
     const downloadLink = document.createElement('a');
     downloadLink.href = dataUrl;
-    
     const timestamp = new Date().getTime();
     downloadLink.download = `qrcode_${suffix}_${timestamp}.png`;
-
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
 }
 
-// Permitir gerar ao pressionar "Enter"
 qrInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
         generateBtn.click();
     }
 });
+
+// --- Theme Toggle ---
+function initTheme() {
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    const isDarkMode = savedTheme ? savedTheme === 'dark' : prefersDark;
+    
+    if (!isDarkMode) {
+        document.body.classList.add('light-mode');
+        themeBtn.textContent = '☀️';
+    } else {
+        document.body.classList.remove('light-mode');
+        themeBtn.textContent = '🌙';
+    }
+}
+
+themeBtn.addEventListener('click', () => {
+    const isLightMode = document.body.classList.toggle('light-mode');
+    localStorage.setItem('theme', isLightMode ? 'light' : 'dark');
+    themeBtn.textContent = isLightMode ? '☀️' : '🌙';
+});
+
+// Inicializar tema ao carregar a página
+initTheme();

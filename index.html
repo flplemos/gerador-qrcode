@@ -7,14 +7,48 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="theme-toggle">
+        <button id="theme-btn" class="theme-toggle-btn" title="Alternar modo claro/escuro">🌙</button>
+    </div>
     <div class="container">
         <h1>Gerador de QR Code</h1>
         <p>Insira um link ou texto para gerar seu código estático.</p>
-        
+
         <div class="input-group">
             <input type="text" id="qr-input" placeholder="Ex: https://seusite.com.br">
             <button id="generate-btn">Gerar</button>
         </div>
+        
+        <div class="options-grid">
+            <div class="option-item">
+                <label for="qr-size">Tamanho:</label>
+                <select id="qr-size">
+                    <option value="128">128x128</option>
+                    <option value="256" selected>256x256</option>
+                    <option value="512">512x512</option>
+                    <option value="1024">1024x1024</option>
+                </select>
+            </div>
+            <div class="option-item">
+                <label for="qr-color-dark">Cor do Código:</label>
+                <input type="color" id="qr-color-dark" value="#000000">
+            </div>
+            <div class="option-item">
+                <label for="qr-color-light">Cor do Fundo:</label>
+                <input type="color" id="qr-color-light" value="#ffffff">
+            </div>
+            <div class="option-item">
+                <label for="qr-correction">Correção de Erro:</label>
+                <select id="qr-correction">
+                    <option value="L">Baixa (Mais limpo)</option>
+                    <option value="M" selected>Média (Padrão)</option>
+                    <option value="Q">Alta</option>
+                    <option value="H">Máxima (Mais denso)</option>
+                </select>
+            </div>
+        </div>
+        
+        <div id="result-area" class="hidden">
         
         <div id="result-area" class="hidden">
             <div id="qrcode-container"></div>
