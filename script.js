@@ -84,6 +84,24 @@ generateBtn.addEventListener('click', () => {
     resultArea.classList.remove('hidden');
 });
 
+// --- Atualização automática das customizações ---
+// Agrupamos os inputs de customização em um array
+const customizationInputs = [sizeSelect, colorDarkInput, colorLightInput, correctionSelect];
+
+customizationInputs.forEach(input => {
+    // Para inputs de cor, 'input' atualiza em tempo real enquanto o usuário arrasta o mouse.
+    // Para os <select>, 'change' funciona perfeitamente.
+    const eventType = input.type === 'color' ? 'input' : 'change';
+    
+    input.addEventListener(eventType, () => {
+        // Verifica se a área do QR Code já está visível e se o input de texto não está vazio
+        if (!resultArea.classList.contains('hidden') && qrInput.value.trim() !== '') {
+            // Simula um clique no botão gerar para refazer o QR Code com as novas opções
+            generateBtn.click();
+        }
+    });
+});
+
 // Função para gerar canvas com borda
 function generateCanvasWithBorder(originalCanvas, padding, borderRadius, bgColor) {
     const framedCanvas = document.createElement('canvas');
