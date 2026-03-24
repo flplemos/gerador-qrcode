@@ -18,7 +18,7 @@
 
 /* Light Mode */
 body.light-mode {
-    --bg-color: #f5f5f5;
+    --bg-color: #ffffff; /* mesmo branco da logo */
     --container-bg: #ffffff;
     --text-primary: #1a1a1a;
     --text-secondary: #666666;
@@ -50,6 +50,26 @@ body {
     min-height: 100vh;
     padding: 90px 0 20px 0;
     transition: background-color 0.3s, color 0.3s;
+}
+.logo {
+    width: 150px;
+    margin-bottom: 20px;
+}
+
+.logo-light {
+    display: none;
+}
+
+.logo-dark {
+    display: block;
+}
+
+body.light-mode .logo-light {
+    display: block;
+}
+
+body.light-mode .logo-dark {
+    display: none;
 }
 
 /* --- Theme Toggle Button --- */
